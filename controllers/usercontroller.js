@@ -33,19 +33,19 @@ export const getUserById = async (req, res) => {
     const user = users.find((u) => u.id === req.params.id);
     if (!user) {
       res.status(404).json({
-        status: 404,
+        status: res.statusCode,
         message: "User not found",
       });
     } else {
       res.status(200).json({
-        status: 200,
+        status: res.statusCode,
         message: "Success",
         data: user,
       });
     }
   } catch (error) {
     res.status(500).json({
-      status: 500,
+      status: res.statusCode,
       message: error.message,
     });
   }
