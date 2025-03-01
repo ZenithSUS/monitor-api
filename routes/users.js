@@ -5,10 +5,15 @@ import express from "express";
 const router = express.Router();
 
 // Import Controller
-import { getAllUsers, getUserById } from "../controllers/usercontroller.js";
+import { getAllUsers, getUserById, createUser, deleteUser } from "../controllers/usercontroller.js";
 
-// Routes
+// Get routes
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);
 
+// Post routes
+router.post("/", createUser);
+
+// Delete routes
+router.delete("/:id", deleteUser);
 export default router;

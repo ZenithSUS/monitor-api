@@ -12,6 +12,8 @@ import {
 // Get all requirements
 export const getAllRequirements = async (req, res) => {
   try {
+    const limit = req.query.limit;
+
     const requirementsCollection = query(collection(db, "Requirements"));
     const requirementsSnapshot = await getDocs(requirementsCollection);
     const requirements = requirementsSnapshot.docs.map((doc) => ({
@@ -19,7 +21,15 @@ export const getAllRequirements = async (req, res) => {
       id: doc.id,
     }));
 
-    res.status(200).json({
+    if (!isNaN(limit) && limit > 0) {
+      return res.status(200).json({
+        status: res.statusCode,
+        message: "Success",
+        data: requirements.slice(0, limit),
+      });
+    }
+
+    return res.status(200).json({
       status: res.statusCode,
       message: "Success",
       data: requirements,
@@ -189,13 +199,22 @@ export const updateRequirement = async (req, res) => {
 export const deleteRequirement = async (req, res) => {
   try {
     const requirementId = req.params.id;
-    const requirement = await deleteDoc(doc(db, "Requirements", requirementId));
+    const requirementsCollection = await getDocs(collection(db, "Requirements"));
+    const requirement = requirementsCollection.docs.find((u) => u.id === requirementId);
+
+    if(!requirement) {
+      return res.status(404).json({
+        status: res.statusCode,
+        message: "Requirement not found",
+      });
+    }
+
+    await deleteDoc(doc(db, "Requirements", requirementId));
 
     return res.status(200).json({
       status: res.statusCode,
       message: "Requirement deleted successfully",
-      data: requirement,
-    });
+    })
   } catch (error) {
     return res.status(500).json({
       status: res.statusCode,
