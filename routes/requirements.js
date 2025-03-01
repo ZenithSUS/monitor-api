@@ -26,5 +26,4 @@ router.put("/:id", updateRequirement);
 // Delete routes
 router.delete("/:id", deleteRequirement);
 
-
 export default router;

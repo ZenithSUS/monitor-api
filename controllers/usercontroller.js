@@ -108,7 +108,7 @@ export const deleteUser = async (req, res) => {
     const userId = req.params.id;
     const usersCollection = await getDocs(collection(db, "Users"));
     const user = usersCollection.docs.find((doc) => doc.id === userId);
-    
+
     if (!user) {
       return res.status(404).json({
         status: res.statusCode,

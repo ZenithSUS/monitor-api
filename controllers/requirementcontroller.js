@@ -199,10 +199,14 @@ export const updateRequirement = async (req, res) => {
 export const deleteRequirement = async (req, res) => {
   try {
     const requirementId = req.params.id;
-    const requirementsCollection = await getDocs(collection(db, "Requirements"));
-    const requirement = requirementsCollection.docs.find((u) => u.id === requirementId);
+    const requirementsCollection = await getDocs(
+      collection(db, "Requirements")
+    );
+    const requirement = requirementsCollection.docs.find(
+      (u) => u.id === requirementId
+    );
 
-    if(!requirement) {
+    if (!requirement) {
       return res.status(404).json({
         status: res.statusCode,
         message: "Requirement not found",
@@ -214,7 +218,7 @@ export const deleteRequirement = async (req, res) => {
     return res.status(200).json({
       status: res.statusCode,
       message: "Requirement deleted successfully",
-    })
+    });
   } catch (error) {
     return res.status(500).json({
       status: res.statusCode,

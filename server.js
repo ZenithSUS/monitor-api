@@ -27,14 +27,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logger);
 
-// Routes   
+// Routes
 app.use("/api/users", users);
 app.use("/api/requirements", requirments);
 
 // Error Handlers
 app.use(notFound);
-app.use(error)
+app.use(error);
 
 app.listen(port, () => {
-    console.log(`Server is listening on port ${port}`);
+  console.log(`Server is listening on port ${port}`);
 });

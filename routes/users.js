@@ -5,7 +5,12 @@ import express from "express";
 const router = express.Router();
 
 // Import Controller
-import { getAllUsers, getUserById, createUser, deleteUser } from "../controllers/usercontroller.js";
+import {
+  getAllUsers,
+  getUserById,
+  createUser,
+  deleteUser,
+} from "../controllers/usercontroller.js";
 
 // Get routes
 router.get("/", getAllUsers);
