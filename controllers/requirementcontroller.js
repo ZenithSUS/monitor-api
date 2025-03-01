@@ -144,7 +144,7 @@ export const updateRequirement = async (req, res) => {
       uploadedFileUrl,
       dateSubmitted,
       expiration,
-      renawal,
+      renewal,
       documentReference,
     } = req.body;
     const requirement = await updateDoc(
@@ -160,7 +160,7 @@ export const updateRequirement = async (req, res) => {
         uploadedFileUrl,
         dateSubmitted,
         expiration,
-        renawal,
+        renewal,
         documentReference,
       }
     );
