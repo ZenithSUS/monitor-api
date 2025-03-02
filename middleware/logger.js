@@ -10,6 +10,8 @@ export const logger = (req, res, next) => {
       day: "numeric",
     })
   );
+
+  if(req.body) console.log("Body: ", req.body);
   console.log(`Middleware status: ${res.statusCode} \n`);
   next();
 };
