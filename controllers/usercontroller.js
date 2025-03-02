@@ -1,4 +1,4 @@
-import { db } from "../firebase.js";
+import { db, auth } from "../firebase.js";
 import {
   doc,
   addDoc,
@@ -7,7 +7,7 @@ import {
   getDocs,
   query,
 } from "firebase/firestore";
-import { v4 as uuidv4 } from "uuid";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -68,10 +68,48 @@ export const getUserById = async (req, res) => {
   }
 };
 
-export const createUser = async (req, res) => {
-  const { firstName, middleName, lastName, department, email } = req.body;
+export const loginUser = async (req, res) => {
+  const { email, password } = req.body;
 
-  if (!firstName || !middleName || !lastName || !department || !email) {
+  if (!email || !password) {
+    return res.status(401).json({
+      status: res.statusCode,
+      message: "All fields are required",
+    })
+  }
+
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+    res.status(200).json({
+      status: res.statusCode,
+      message: "User logged in successfully",
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: res.statusCode,
+      message: error.message,
+    });
+  }
+}
+
+export const createUser = async (req, res) => {
+  const { firstName, middleName, lastName, department, email, password } =
+    req.body;
+
+  if (
+    !firstName ||
+    !middleName ||
+    !lastName ||
+    !department ||
+    !email ||
+    !password
+  ) {
     return res.status(401).json({
       status: res.statusCode,
       message: "All fields are required",
@@ -79,9 +117,14 @@ export const createUser = async (req, res) => {
   }
 
   try {
-    const uid = uuidv4();
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
     const users = addDoc(collection(db, "Users"), {
-      uid,
+      uid: user.uid,
       firstName,
       middleName,
       lastName,
