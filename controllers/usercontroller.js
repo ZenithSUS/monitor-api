@@ -56,32 +56,6 @@ export const getUserById = async (req, res) => {
   }
 };
 
-export const loginUser = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(401).json({
-      status: res.statusCode,
-      message: "All fields are required",
-    })
-  }
-
-  try {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    const user = userCredential.user;
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({
-      status: res.statusCode,
-      message: error.message,
-    });
-  }
-}
-
 export const createUser = async (req, res) => {
   const { firstName, middleName, lastName, department, email, password } =
     req.body;
