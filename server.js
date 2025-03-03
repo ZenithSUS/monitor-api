@@ -15,6 +15,15 @@ const port = process.env.PORT || 8000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+var admin = require("firebase-admin");
+
+var serviceAccount = require("./monitoring-system-ea001-firebase-adminsdk-fbsvc-0f81077dc7.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+
 // Initialize app
 const app = express();
 
