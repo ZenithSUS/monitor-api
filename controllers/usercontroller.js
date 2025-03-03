@@ -21,15 +21,11 @@ export const getAllUsers = async (req, res) => {
 
     if (!isNaN(limit) && limit > 0) {
       return res.status(200).json({
-        status: res.statusCode,
-        message: "Success",
-        data: users.slice(0, limit),
+        ...users.slice(0, limit)
       });
     }
     res.status(200).json({
-      status: res.statusCode,
-      message: "Success",
-      data: users,
+      ...users
     });
   } catch (error) {
     res.status(500).json({

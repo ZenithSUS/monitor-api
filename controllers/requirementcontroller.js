@@ -30,9 +30,7 @@ export const getAllRequirements = async (req, res) => {
     }
 
     return res.status(200).json({
-      status: res.statusCode,
-      message: "Success",
-      data: requirements,
+      ...requirements
     });
   } catch (error) {
     res.status(500).json({
@@ -59,9 +57,7 @@ export const getRequirementById = async (req, res) => {
       });
     } else {
       return res.status(200).json({
-        status: res.statusCode,
-        message: "Success",
-        data: requirement,
+        ...requirement
       });
     }
   } catch (error) {
