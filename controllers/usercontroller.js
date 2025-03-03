@@ -1,4 +1,4 @@
-import { db, auth } from "../firebase.js";
+import { db } from "../firebase.js";
 import {
   doc,
   addDoc,
@@ -7,7 +7,6 @@ import {
   getDocs,
   query,
 } from "firebase/firestore";
-import { signInWithEmailAndPassword } from "firebase/auth";
 
 export const getAllUsers = async (req, res) => {
   try {
