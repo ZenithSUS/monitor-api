@@ -29,9 +29,7 @@ export const getAllRequirements = async (req, res) => {
       });
     }
 
-    return res.status(200).json({
-      ...requirements
-    });
+    return res.status(200).json(requirements);
   } catch (error) {
     res.status(500).json({
       status: res.statusCode,
@@ -56,9 +54,7 @@ export const getRequirementById = async (req, res) => {
         message: "Requirement not found",
       });
     } else {
-      return res.status(200).json({
-        ...requirement
-      });
+      return res.status(200).json(requirement);
     }
   } catch (error) {
     return res.status(500).json({
