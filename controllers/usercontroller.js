@@ -8,6 +8,8 @@ import {
   query,
 } from "firebase/firestore";
 
+import { getAuth } from "firebase-admin/auth";
+
 export const getAllUsers = async (req, res) => {
   try {
     const limit = req.query.limit;
@@ -74,6 +76,11 @@ export const createUser = async (req, res) => {
   }
 
   try {
+    const userRecord = await getAuth().createUser({
+      email,
+      password,
+    });
+
     const users = addDoc(collection(db, "Users"), {
       firstName,
       middleName,
@@ -82,7 +89,7 @@ export const createUser = async (req, res) => {
       email,
     });
 
-    if (users) {
+    if (users || userRecord) {
       return res.status(200).json({
         status: res.statusCode,
         message: "User created successfully",
