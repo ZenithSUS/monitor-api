@@ -7,7 +7,7 @@ import {
   getDocs,
   query,
 } from "firebase/firestore";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -117,14 +117,7 @@ export const createUser = async (req, res) => {
   }
 
   try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    const user = userCredential.user;
     const users = addDoc(collection(db, "Users"), {
-      uid: user.uid,
       firstName,
       middleName,
       lastName,
