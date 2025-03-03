@@ -11,7 +11,9 @@ export const logger = (req, res, next) => {
     })
   );
 
-  if(req.body !== null || req.body !== undefined) console.log("Body: ", req.body);
+  if (req.body && Object.keys(req.body).length > 0) {
+    console.log("Body: ", req.body);
+  }
   console.log(`Middleware status: ${res.statusCode} \n`);
   next();
 };
