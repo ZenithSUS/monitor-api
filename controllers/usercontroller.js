@@ -51,9 +51,7 @@ export const getUserById = async (req, res) => {
       });
     } else {
       res.status(200).json({
-        status: res.statusCode,
-        message: "Success",
-        data: user,
+        ...user
       });
     }
   } catch (error) {
@@ -82,9 +80,7 @@ export const loginUser = async (req, res) => {
     );
     const user = userCredential.user;
     res.status(200).json({
-      status: res.statusCode,
-      message: "User logged in successfully",
-      data: user,
+      ...user
     });
   } catch (error) {
     res.status(500).json({
