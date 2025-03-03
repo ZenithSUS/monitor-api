@@ -22,11 +22,7 @@ export const getAllRequirements = async (req, res) => {
     }));
 
     if (!isNaN(limit) && limit > 0) {
-      return res.status(200).json({
-        status: res.statusCode,
-        message: "Success",
-        data: requirements.slice(0, limit),
-      });
+      return res.status(200).json(requirements.slice(0, limit));
     }
 
     return res.status(200).json(requirements);

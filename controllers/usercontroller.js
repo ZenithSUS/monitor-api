@@ -20,13 +20,9 @@ export const getAllUsers = async (req, res) => {
     }));
 
     if (!isNaN(limit) && limit > 0) {
-      return res.status(200).json({
-        ...users.slice(0, limit)
-      });
+      return res.status(200).json(users.slice(0, limit));
     }
-    res.status(200).json({
-      ...users
-    });
+    res.status(200).json(users);
   } catch (error) {
     res.status(500).json({
       status: res.statusCode,
@@ -50,9 +46,7 @@ export const getUserById = async (req, res) => {
         message: "User not found",
       });
     } else {
-      res.status(200).json({
-        ...user
-      });
+      res.status(200).json(user);
     }
   } catch (error) {
     res.status(500).json({
@@ -79,9 +73,7 @@ export const loginUser = async (req, res) => {
       password
     );
     const user = userCredential.user;
-    res.status(200).json({
-      ...user
-    });
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({
       status: res.statusCode,
