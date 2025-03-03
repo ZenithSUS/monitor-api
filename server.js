@@ -8,11 +8,6 @@ import { fileURLToPath } from "url";
 import { logger } from "./middleware/logger.js";
 import { notFound } from "./middleware/not-found.js";
 import { error } from "./middleware/error.js";
-import { readFile } from 'fs/promises';
-
-const serviceAccount = JSON.parse(
-  await readFile(new URL('./monitoring-system-ea001-firebase-adminsdk-fbsvc-0f81077dc7.json', import.meta.url))
-);
 
 // Port number
 const port = process.env.PORT || 8000;
@@ -22,7 +17,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert({
+  "type": process.env.SERVICE_TYPE,
+  "project_id": process.env.PROJECT_ID,
+  "private_key_id": process.env.PRIVATE_KEY_ID,
+  "private_key": process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
+  "client_email": process.env.CLIENT_EMAIL,
+  "client_id": process.env.CLIENT_ID,
+  "auth_uri": process.env.AUTH_URI,
+  "token_uri": process.env.TOKEN_URI,
+  "auth_provider_x509_cert_url": process.env.AUTH_PROVIDER_CERT,
+  "client_x509_cert_url": process.env.CLIENT_CERT_URL,
+  "universe_domain": process.env.UNIVERSE_DOMAIN
+})
 });
 
 
