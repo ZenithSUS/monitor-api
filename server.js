@@ -3,10 +3,16 @@ import cors from "cors";
 import path from "path";
 import users from "./routes/users.js";
 import requirments from "./routes/requirements.js";
+import admin from "firebase-admin";
 import { fileURLToPath } from "url";
 import { logger } from "./middleware/logger.js";
 import { notFound } from "./middleware/not-found.js";
 import { error } from "./middleware/error.js";
+import { readFile } from 'fs/promises';
+
+const serviceAccount = JSON.parse(
+  await readFile(new URL('./monitoring-system-ea001-firebase-adminsdk-fbsvc-0f81077dc7.json', import.meta.url))
+);
 
 // Port number
 const port = process.env.PORT || 8000;
@@ -14,10 +20,6 @@ const port = process.env.PORT || 8000;
 // Base directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-var admin = require("firebase-admin");
-
-var serviceAccount = require("./monitoring-system-ea001-firebase-adminsdk-fbsvc-0f81077dc7.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
