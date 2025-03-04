@@ -95,7 +95,6 @@ export const createRequirement = async (req, res) => {
       !uploadedFileUrl ||
       !dateSubmitted ||
       !expiration ||
-      !renewal ||
       !documentReference
     ) {
       return res.status(401).json({
@@ -116,7 +115,7 @@ export const createRequirement = async (req, res) => {
       uploadedFileUrl,
       dateSubmitted,
       expiration,
-      renewal,
+      renewal: "",
       documentReference,
       id: uniqueId,
     });
