@@ -87,6 +87,8 @@ export const createUser = async (req, res) => {
       lastName,
       department,
       email,
+      role: "user",
+      id: userRecord.uid
     });
 
     if (users || userRecord) {
