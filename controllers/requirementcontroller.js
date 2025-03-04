@@ -79,7 +79,6 @@ export const createRequirement = async (req, res) => {
       uploadedFileUrl,
       dateSubmitted,
       expiration,
-      renewal,
       documentReference,
     } = req.body;
 
