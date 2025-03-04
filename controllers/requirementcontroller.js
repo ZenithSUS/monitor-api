@@ -26,11 +26,12 @@ export const getAllRequirements = async (req, res) => {
       return res.status(200).json(requirements.slice(0, limit));
     }
 
-    if(!isNaN(department)) {
+    if(department) {
       return res.status(200).json(requirements.filter((r) => r.department === department))
+    } else {
+      return res.status(200).json(requirements);
     }
 
-    return res.status(200).json(requirements);
   } catch (error) {
     res.status(500).json({
       status: res.statusCode,
