@@ -13,6 +13,7 @@ import {
 export const getAllRequirements = async (req, res) => {
   try {
     const limit = req.query.limit;
+    const department = req.query.dept;
 
     const requirementsCollection = query(collection(db, "Requirements"));
     const requirementsSnapshot = await getDocs(requirementsCollection);
@@ -23,6 +24,10 @@ export const getAllRequirements = async (req, res) => {
 
     if (!isNaN(limit) && limit > 0) {
       return res.status(200).json(requirements.slice(0, limit));
+    }
+
+    if(!isNaN(department)) {
+      return res.status(200).json(requirements.filter((r) => r.department === department))
     }
 
     return res.status(200).json(requirements);
