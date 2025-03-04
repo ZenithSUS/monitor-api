@@ -7,8 +7,8 @@ import { collection, getDocs } from 'firebase/firestore';
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'your-email@gmail.com',
-    pass: 'your-email-password',
+    user: process.env.CRON_JOB_EMAIL,
+    pass: process.env.CRON_JOB_APP_PASSWORD,
   },
 });
 
