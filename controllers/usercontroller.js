@@ -81,7 +81,7 @@ export const createUser = async (req, res) => {
 
     const users = addDoc(collection(db, "Users"), {
       firstName,
-      middleName,
+      middleName: middleName || "N/A",
       lastName,
       department,
       email,
