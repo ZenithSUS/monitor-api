@@ -99,6 +99,7 @@ export const createRequirement = async (req, res) => {
       });
     }
 
+    const uniqueId = (Math.random() + 1).toString(36).substring(7);
     const requirement = await addDoc(collection(db, "Requirements"), {
       department,
       complianceList,
@@ -112,6 +113,7 @@ export const createRequirement = async (req, res) => {
       expiration,
       renewal,
       documentReference,
+      id: uniqueId,
     });
 
     return res.status(201).json({
