@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import { logger } from "./middleware/logger.js";
 import { notFound } from "./middleware/not-found.js";
 import { error } from "./middleware/error.js";
+import './cronJobs.js';
 
 // Port number
 const port = process.env.PORT || 8000;

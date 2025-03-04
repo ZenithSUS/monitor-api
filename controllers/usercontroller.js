@@ -38,7 +38,6 @@ export const getUserById = async (req, res) => {
     const usersSnapshot = await getDocs(usersCollection);
     const users = usersSnapshot.docs.map((doc) => ({
       ...doc.data(),
-      id: doc.id,
     }));
     const user = users.find((u) => u.id === req.params.id);
     if (!user) {
