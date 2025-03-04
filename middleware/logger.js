@@ -16,7 +16,7 @@ export const logger = (req, res, next) => {
     if (req.body && Object.keys(req.body).length > 0) {
       console.log("Body: ", req.body);
     }
-    console.log(`Middleware status: ${res.statusCode <= 300 ? 'OK' : 'Not Ok'}`);
+    console.log(`Middleware status: ${res.statusCode < 400 ? 'OK' : 'Not Ok'}`);
     console.log(`Response time: ${duration}ms \n`);
   });
   next();
