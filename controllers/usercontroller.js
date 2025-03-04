@@ -61,7 +61,6 @@ export const createUser = async (req, res) => {
 
   if (
     !firstName ||
-    !middleName ||
     !lastName ||
     !department ||
     !email ||
