@@ -17,7 +17,6 @@ export const getAllUsers = async (req, res) => {
     const usersSnapshot = await getDocs(usersCollection);
     const users = usersSnapshot.docs.map((doc) => ({
       ...doc.data(),
-      id: doc.id,
     }));
 
     if (!isNaN(limit) && limit > 0) {
