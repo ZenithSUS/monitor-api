@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 // Function to send email
 const sendEmail = (email, subject, text) => {
   const mailOptions = {
-    from: 'jeranmerino147@gmail.com',
+    from: process.env.CRON_JOB_EMAIL,
     to: email,
     subject: subject,
     text: text,
