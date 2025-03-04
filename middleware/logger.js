@@ -13,11 +13,10 @@ export const logger = (req, res, next) => {
         second: "2-digit",
       })
     );
-    console.log("Headers: ", req.headers);
     if (req.body && Object.keys(req.body).length > 0) {
       console.log("Body: ", req.body);
     }
-    console.log(`Middleware status: ${res.statusCode === 200 ? 'OK' : 'Not Ok'}`);
+    console.log(`Middleware status: ${res.statusCode <= 300 ? 'OK' : 'Not Ok'}`);
     console.log(`Response time: ${duration}ms \n`);
   });
   next();
