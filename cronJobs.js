@@ -30,8 +30,8 @@ const sendEmail = (email, subject, text) => {
   });
 };
 
-// Schedule the cron job to run daily
-cron.schedule('0 0 * * *', async () => {
+// Schedule the cron job to run every minute
+cron.schedule('* * * * *', async () => {
   try {
     const requirementsCollection = collection(db, 'Requirements');
     const requirementsSnapshot = await getDocs(requirementsCollection);
@@ -47,7 +47,7 @@ cron.schedule('0 0 * * *', async () => {
       const remainingDays = Math.ceil((expiration - today) / (1000 * 60 * 60 * 24));
 
       if (remainingDays <= 7) {
-        const email = requirement.personInCharge
+        const email = requirement.personInCharge;
         const subject = 'Requirement Expiration Reminder';
         const text = `Dear ${requirement.personInCharge},\n\nYour requirement "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\nYour Company`;
 
