@@ -45,14 +45,19 @@ cron.schedule('0 0 * * *', async () => {
     requirements.forEach((requirement) => {
       const expiration = new Date(requirement.expiration);
       const remainingDays = Math.ceil((expiration - today) / (1000 * 60 * 60 * 24));
+      const frequency = requirement.frequencyOfCompliance;
 
-      if (remainingDays <= 15 || remainingDays <= 90 || remainingDays <= 60) {
-        const email = requirement.personInCharge
+      if (
+        (remainingDays <= 15 && frequency === "Monthly") ||
+        (remainingDays <= 90 && (frequency === "Annual" || frequency === "Semi Annual")) ||
+        (remainingDays <= 30 && frequency === "Quarterly")
+      ) {
+        const email = requirement.personInCharge;
         const subject = 'Requirement Expiration Reminder';
         const text = `Dear ${requirement.personInCharge},\n\nYour requirement "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\nYour Company`;
 
         sendEmail(email, subject, text);
-        console.log("Send Successfully")
+        console.log("Send Successfully");
       }
     });
   } catch (error) {
