@@ -46,7 +46,7 @@ cron.schedule('0 0 * * *', async () => {
       const expiration = new Date(requirement.expiration);
       const remainingDays = Math.ceil((expiration - today) / (1000 * 60 * 60 * 24));
 
-      if (remainingDays <= 7) {
+      if (remainingDays <= 15 || remainingDays <= 90 || remainingDays <= 60) {
         const email = requirement.personInCharge
         const subject = 'Requirement Expiration Reminder';
         const text = `Dear ${requirement.personInCharge},\n\nYour requirement "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\nYour Company`;
