@@ -1,11 +1,11 @@
-import cron from 'node-cron';
-import nodemailer from 'nodemailer';
-import { db } from './firebase.js';
-import { collection, getDocs } from 'firebase/firestore';
+import cron from "node-cron";
+import nodemailer from "nodemailer";
+import { db } from "./firebase.js";
+import { collection, getDocs } from "firebase/firestore";
 
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: "gmail",
   auth: {
     user: process.env.CRON_JOB_EMAIL,
     pass: process.env.CRON_JOB_APP_PASSWORD,
@@ -24,17 +24,18 @@ const sendEmail = (email, subject, text, html) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log('Error sending email:', error);
+      console.log("Error sending email:", error);
     } else {
-      console.log('Email sent:', info.response);
+      console.log("Email sent:", info.response);
     }
   });
 };
 
 // Schedule the cron job to run daily at 1:15 PM
-cron.schedule('15 13 * * *', async () => {
+cron.schedule("15 13 * * *", async () => {
+  console.log("Cron job started at:", new Date().toISOString());
   try {
-    const requirementsCollection = collection(db, 'Requirements');
+    const requirementsCollection = collection(db, "Requirements");
     const requirementsSnapshot = await getDocs(requirementsCollection);
     const requirements = requirementsSnapshot.docs.map((doc) => ({
       ...doc.data(),
@@ -45,16 +46,19 @@ cron.schedule('15 13 * * *', async () => {
 
     requirements.forEach((requirement) => {
       const expiration = new Date(requirement.expiration);
-      const remainingDays = Math.ceil((expiration - today) / (1000 * 60 * 60 * 24));
+      const remainingDays = Math.ceil(
+        (expiration - today) / (1000 * 60 * 60 * 24)
+      );
       const frequency = requirement.frequencyOfCompliance;
 
       if (
         (remainingDays <= 15 && frequency === "Monthly") ||
-        (remainingDays <= 90 && (frequency === "Annual" || frequency === "Semi Annual")) ||
+        (remainingDays <= 90 &&
+          (frequency === "Annual" || frequency === "Semi Annual")) ||
         (remainingDays <= 30 && frequency === "Quarterly")
       ) {
         const email = requirement.personInCharge;
-        const subject = 'Subscription Expiration Reminder';
+        const subject = "Subscription Expiration Reminder";
         const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\nYour Company`;
         const html = `
           <div style="font-family: Arial, sans-serif; line-height: 1.6;">
@@ -72,6 +76,7 @@ cron.schedule('15 13 * * *', async () => {
       }
     });
   } catch (error) {
-    console.log('Error in cron job:', error);
+    console.log("Error in cron job:", error);
   }
+  console.log("Cron job finished at:", new Date().toISOString());
 });
