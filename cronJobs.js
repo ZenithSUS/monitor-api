@@ -31,11 +31,11 @@ const sendEmail = (email, subject, text, html) => {
   });
 };
 
-// Schedule the cron job to run daily at 3:50 PM Philippine time (UTC+8)
-cron.schedule("50 7 * * *", async () => { // 7:50 AM UTC is 3:50 PM UTC+8
+// Schedule the cron job to run daily at 8:00 AM Philippine time (UTC+8)
+cron.schedule("0 0 * * *", async () => { // 12:00 AM UTC is 8:00 AM UTC+8
   const now = new Date();
   const philippineTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
-  if (philippineTime.getHours() === 15 && philippineTime.getMinutes() === 50) {
+  if (philippineTime.getHours() === 8 && philippineTime.getMinutes() === 0) {
     console.log("Cron job started at:", philippineTime.toISOString());
     try {
       const requirementsCollection = collection(db, "Requirements");
