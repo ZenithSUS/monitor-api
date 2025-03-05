@@ -19,6 +19,7 @@ const sendEmail = (email, subject, text) => {
     to: email,
     subject: subject,
     text: text,
+    html: html,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -31,7 +32,7 @@ const sendEmail = (email, subject, text) => {
 };
 
 // Schedule the cron job to run daily at 8:00 AM
-cron.schedule('0 8 * * *', async () => {
+cron.schedule('43 11 * * *', async () => {
   try {
     const requirementsCollection = collection(db, 'Requirements');
     const requirementsSnapshot = await getDocs(requirementsCollection);
@@ -53,10 +54,13 @@ cron.schedule('0 8 * * *', async () => {
         (remainingDays <= 30 && frequency === "Quarterly")
       ) {
         const email = requirement.personInCharge;
-        const subject = 'Requirement Expiration Reminder';
-        const text = `Dear ${requirement.personInCharge},\n\nYour requirement "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\nYour Company`;
+        const subject = 'Subscription Expiration Reminder';
+        const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\nYour Company`;
+        const html = `
+         <button>Click Me!</button>
+        `;
 
-        sendEmail(email, subject, text);
+        sendEmail(email, subject, text, html);
         console.log("Send Successfully");
       }
     });
