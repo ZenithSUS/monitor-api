@@ -30,8 +30,8 @@ const sendEmail = (email, subject, text) => {
   });
 };
 
-// Schedule the cron job to run daily at 12:00 PM
-cron.schedule('0 12 * * *', async () => {
+// Schedule the cron job to run daily at 11:30 AM
+cron.schedule('30 11 * * *', async () => {
   try {
     const requirementsCollection = collection(db, 'Requirements');
     const requirementsSnapshot = await getDocs(requirementsCollection);
