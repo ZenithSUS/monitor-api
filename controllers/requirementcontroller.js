@@ -194,6 +194,7 @@ export const updateRequirementRenewal = async (req, res) => {
       doc(db, "Requirements", requirementId),
       {
         renewal,
+        dateSubmitted: renewal
       }
     );
 
