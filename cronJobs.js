@@ -31,8 +31,8 @@ const sendEmail = (email, subject, text, html) => {
   });
 };
 
-// Schedule the cron job to run daily at 11:48 AM
-cron.schedule('48 11 * * *', async () => {
+// Schedule the cron job to run daily at 11:51 AM
+cron.schedule('51 11 * * *', async () => {
   try {
     const requirementsCollection = collection(db, 'Requirements');
     const requirementsSnapshot = await getDocs(requirementsCollection);
@@ -64,7 +64,7 @@ cron.schedule('48 11 * * *', async () => {
             <p>Please take the necessary actions.</p>
             <p>Best regards,</p>
             <p>Your Company</p>
-            <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Click Me!</button>
+            <a href='' style="background-color: #4CAF50; color: white; text-decoration: none; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Click Me!</a>
           </div>
         `;
 
