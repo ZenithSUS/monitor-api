@@ -191,29 +191,20 @@ export const updateRequirementRenewal = async (req, res) => {
   try {
     const requirementId = req.params.id;
     const { renewal, frequency } = req.body;
-    const newExpiration = calculateExpirationDate(renewal, frequency)
+    const newExpiration = calculateExpirationDate(renewal, frequency);
 
-    if(!renewal || !frequency) {
+    if (!renewal || !frequency) {
       return res.status(401).json({
-        message: "Renewal or Frequency is required"
-      })
-    }
-
-    const requirement = await updateDoc(
-      doc(db, "Requirements", requirementId),
-      {
-        renewal,
-        dateSubmitted: renewal,
-        expiration: newExpiration
-      }
-    );
-
-    if (!requirement) {
-      return res.status(404).json({
-        status: res.statusCode,
-        message: "Requirement not found",
+        message: "Renewal or Frequency is required",
       });
     }
+
+    console.log(requirementId);
+    await updateDoc(doc(db, "Requirements", requirementId), {
+      renewal,
+      dateSubmitted: renewal,
+      expiration: newExpiration,
+    });
 
     return res.status(200).json({
       status: res.statusCode,
