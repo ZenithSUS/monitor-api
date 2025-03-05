@@ -59,7 +59,7 @@ cron.schedule("0 8 * * *", async () => {
       ) {
         const email = requirement.personInCharge;
         const subject = "Subscription Expiration Reminder";
-        const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\nYour Company`;
+        const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
         const html = `
           <div style="font-family: Arial, sans-serif; line-height: 1.6;">
             <h2>Subscription Expiration Reminder</h2>
