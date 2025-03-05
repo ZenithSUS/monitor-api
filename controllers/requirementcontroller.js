@@ -8,6 +8,7 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
+import { calculateExpirationDate } from "../utils/expiration-date.js";
 
 // Get all requirements
 export const getAllRequirements = async (req, res) => {
@@ -189,12 +190,21 @@ export const updateRequirement = async (req, res) => {
 export const updateRequirementRenewal = async (req, res) => {
   try {
     const requirementId = req.params.id;
-    const { renewal } = req.body;
+    const { renewal, frequency } = req.body;
+    const newExpiration = calculateExpirationDate(renewal, frequency)
+
+    if(!renewal || !frequency) {
+      return res.status(401).json({
+        message: "Renewal or Frequency is required"
+      })
+    }
+
     const requirement = await updateDoc(
       doc(db, "Requirements", requirementId),
       {
         renewal,
-        dateSubmitted: renewal
+        dateSubmitted: renewal,
+        expiration: newExpiration
       }
     );
 
