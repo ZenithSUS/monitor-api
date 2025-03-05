@@ -167,13 +167,6 @@ export const updateRequirement = async (req, res) => {
       }
     );
 
-    if (!requirement) {
-      return res.status(404).json({
-        status: res.statusCode,
-        message: "Requirement not found",
-      });
-    }
-
     return res.status(200).json({
       status: res.statusCode,
       message: "Requirement updated successfully",
