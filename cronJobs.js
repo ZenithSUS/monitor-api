@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Function to send email
-const sendEmail = (email, subject, text) => {
+const sendEmail = (email, subject, text, html) => {
   const mailOptions = {
     from: process.env.CRON_JOB_EMAIL,
     to: email,
@@ -31,8 +31,8 @@ const sendEmail = (email, subject, text) => {
   });
 };
 
-// Schedule the cron job to run daily at 8:00 AM
-cron.schedule('43 11 * * *', async () => {
+// Schedule the cron job to run daily at 11:48 AM
+cron.schedule('48 11 * * *', async () => {
   try {
     const requirementsCollection = collection(db, 'Requirements');
     const requirementsSnapshot = await getDocs(requirementsCollection);
@@ -57,7 +57,15 @@ cron.schedule('43 11 * * *', async () => {
         const subject = 'Subscription Expiration Reminder';
         const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\nYour Company`;
         const html = `
-         <button>Click Me!</button>
+          <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+            <h2>Subscription Expiration Reminder</h2>
+            <p>Dear ${requirement.personInCharge},</p>
+            <p>Your subscription "<strong>${requirement.complianceList}</strong>" is expiring in ${remainingDays} days.</p>
+            <p>Please take the necessary actions.</p>
+            <p>Best regards,</p>
+            <p>Your Company</p>
+            <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Click Me!</button>
+          </div>
         `;
 
         sendEmail(email, subject, text, html);
