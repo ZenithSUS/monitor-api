@@ -31,54 +31,58 @@ const sendEmail = (email, subject, text, html) => {
   });
 };
 
-// Schedule the cron job to run daily at 8:00 AM
-cron.schedule("0 8 * * *", async () => {
-  console.log("Cron job started at:", new Date().toISOString());
-  try {
-    const requirementsCollection = collection(db, "Requirements");
-    const requirementsSnapshot = await getDocs(requirementsCollection);
-    const requirements = requirementsSnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
+// Schedule the cron job to run daily at 3:50 PM Philippine time (UTC+8)
+cron.schedule("50 7 * * *", async () => { // 7:50 AM UTC is 3:50 PM UTC+8
+  const now = new Date();
+  const philippineTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+  if (philippineTime.getHours() === 15 && philippineTime.getMinutes() === 50) {
+    console.log("Cron job started at:", philippineTime.toISOString());
+    try {
+      const requirementsCollection = collection(db, "Requirements");
+      const requirementsSnapshot = await getDocs(requirementsCollection);
+      const requirements = requirementsSnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
 
-    const today = new Date();
+      const today = new Date();
 
-    requirements.forEach((requirement) => {
-      const expiration = new Date(requirement.expiration);
-      const remainingDays = Math.ceil(
-        (expiration - today) / (1000 * 60 * 60 * 24)
-      );
-      const frequency = requirement.frequencyOfCompliance;
+      requirements.forEach((requirement) => {
+        const expiration = new Date(requirement.expiration);
+        const remainingDays = Math.ceil(
+          (expiration - today) / (1000 * 60 * 60 * 24)
+        );
+        const frequency = requirement.frequencyOfCompliance;
 
-      if (
-        (remainingDays <= 15 && frequency === "Monthly") ||
-        (remainingDays <= 90 &&
-          (frequency === "Annual" || frequency === "Semi Annual")) ||
-        (remainingDays <= 30 && frequency === "Quarterly")
-      ) {
-        const email = requirement.personInCharge;
-        const subject = "Subscription Expiration Reminder";
-        const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
-        const html = `
-          <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-            <h2>Subscription Expiration Reminder</h2>
-            <p>Dear ${requirement.personInCharge},</p>
-            <p>Your subscription "<strong>${requirement.complianceList}</strong>" is expiring in ${remainingDays} days.</p>
-            <p>Please take the necessary actions.</p>
-            <p>Best regards,</p>
-            <p>Your Company</p>
-            <a href="http://example.com" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Click Me!</a>
-          </div>
-        `;
+        if (
+          (remainingDays <= 15 && frequency === "Monthly") ||
+          (remainingDays <= 90 &&
+            (frequency === "Annual" || frequency === "Semi Annual")) ||
+          (remainingDays <= 30 && frequency === "Quarterly")
+        ) {
+          const email = requirement.personInCharge;
+          const subject = "Subscription Expiration Reminder";
+          const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
+          const html = `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+              <h2>Subscription Expiration Reminder</h2>
+              <p>Dear ${requirement.personInCharge},</p>
+              <p>Your subscription "<strong>${requirement.complianceList}</strong>" is expiring in ${remainingDays} days.</p>
+              <p>Please take the necessary actions.</p>
+              <p>Best regards,</p>
+              <p>Your Company</p>
+              <a href="http://example.com" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Click Me!</a>
+            </div>
+          `;
 
-        sendEmail(email, subject, text, html);
-      }
-    });
-  } catch (error) {
-    console.log("Error in cron job:", error);
+          sendEmail(email, subject, text, html);
+        }
+      });
+    } catch (error) {
+      console.log("Error in cron job:", error);
+    }
+    console.log("Cron job finished at:", philippineTime.toISOString());
   }
-  console.log("Cron job finished at:", new Date().toISOString());
 });
 
 // Ensure the script keeps running
