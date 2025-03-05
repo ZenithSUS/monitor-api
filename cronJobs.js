@@ -31,8 +31,8 @@ const sendEmail = (email, subject, text, html) => {
   });
 };
 
-// Schedule the cron job to run daily at 12:35 PM
-cron.schedule('35 12 * * *', async () => {
+// Schedule the cron job to run daily at 12:42 PM
+cron.schedule('42 12 * * *', async () => {
   try {
     const requirementsCollection = collection(db, 'Requirements');
     const requirementsSnapshot = await getDocs(requirementsCollection);
@@ -71,6 +71,7 @@ cron.schedule('35 12 * * *', async () => {
         sendEmail(email, subject, text, html);
         console.log("Send Successfully");
       }
+      console.log("Cron Executed!")
     });
   } catch (error) {
     console.log('Error in cron job:', error);
