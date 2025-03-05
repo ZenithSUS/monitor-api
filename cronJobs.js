@@ -80,3 +80,5 @@ cron.schedule("20 13 * * *", async () => {
   }
   console.log("Cron job finished at:", new Date().toISOString());
 });
+
+setInterval(() => {}, 1000);
