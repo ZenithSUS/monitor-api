@@ -31,8 +31,8 @@ const sendEmail = (email, subject, text, html) => {
   });
 };
 
-// Schedule the cron job 
-cron.schedule("* * * * *", async () => {
+// Schedule the cron job to run daily at 1:45 PM
+cron.schedule("45 13 * * *", async () => {
   console.log("Cron job started at:", new Date().toISOString());
   try {
     const requirementsCollection = collection(db, "Requirements");
