@@ -11,6 +11,8 @@ import {
   createRequirement,
   deleteRequirement,
   updateRequirement,
+  updateRequirementRenewal,
+  updateRequirementReference,
 } from "../controllers/requirementcontroller.js";
 
 // Get routes
@@ -22,6 +24,8 @@ router.post("/", createRequirement);
 
 // Put routes
 router.put("/:id", updateRequirement);
+router.put("/renewal/:id", updateRequirementRenewal);
+router.put("/reference/:id", updateRequirementReference);
 
 // Delete routes
 router.delete("/:id", deleteRequirement);

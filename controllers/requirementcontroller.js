@@ -26,12 +26,13 @@ export const getAllRequirements = async (req, res) => {
       return res.status(200).json(requirements.slice(0, limit));
     }
 
-    if(department) {
-      return res.status(200).json(requirements.filter((r) => r.department === department))
+    if (department) {
+      return res
+        .status(200)
+        .json(requirements.filter((r) => r.department === department));
     } else {
       return res.status(200).json(requirements);
     }
-
   } catch (error) {
     res.status(500).json({
       status: res.statusCode,
@@ -103,7 +104,6 @@ export const createRequirement = async (req, res) => {
       });
     }
 
-    const uniqueId = (Math.random() + 1).toString(36).substring(7);
     const requirement = await addDoc(collection(db, "Requirements"), {
       department,
       complianceList,
@@ -117,7 +117,6 @@ export const createRequirement = async (req, res) => {
       expiration,
       renewal: "",
       documentReference,
-      id: uniqueId,
     });
 
     return res.status(201).json({
@@ -149,7 +148,6 @@ export const updateRequirement = async (req, res) => {
       dateSubmitted,
       expiration,
       renewal,
-      documentReference,
     } = req.body;
     const requirement = await updateDoc(
       doc(db, "Requirements", requirementId),
@@ -165,7 +163,6 @@ export const updateRequirement = async (req, res) => {
         dateSubmitted,
         expiration,
         renewal,
-        documentReference,
       }
     );
 
@@ -180,6 +177,66 @@ export const updateRequirement = async (req, res) => {
       status: res.statusCode,
       message: "Requirement updated successfully",
       data: requirement,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: error.message,
+    });
+  }
+};
+
+export const updateRequirementRenewal = async (req, res) => {
+  try {
+    const requirementId = req.params.id;
+    const { renewal } = req.body;
+    const requirement = await updateDoc(
+      doc(db, "Requirements", requirementId),
+      {
+        renewal,
+      }
+    );
+
+    if (!requirement) {
+      return res.status(404).json({
+        status: res.statusCode,
+        message: "Requirement not found",
+      });
+    }
+
+    return res.status(200).json({
+      status: res.statusCode,
+      message: "Requirement updated successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: error.message,
+    });
+  }
+};
+
+export const updateRequirementReference = async (req, res) => {
+  try {
+    const requirementId = req.params.id;
+    const { documentReference } = req.body;
+    const requirement = await updateDoc(
+      doc(db, "Requirements", requirementId),
+      {
+        documentReference,
+      }
+    );
+
+    if (!requirement) {
+      return res.status(404).json({
+        status: res.statusCode,
+        message: "Requirement not found",
+      });
+    }
+
+    return res.status(200).json({
+      status: res.statusCode,
+      message: "Requirement updated successfully",
     });
   } catch (error) {
     return res.status(500).json({
