@@ -69,9 +69,7 @@ cron.schedule('0 13 * * *', async () => {
         `;
 
         sendEmail(email, subject, text, html);
-        console.log("Send Successfully");
       }
-      console.log("Cron Executed!")
     });
   } catch (error) {
     console.log('Error in cron job:', error);
