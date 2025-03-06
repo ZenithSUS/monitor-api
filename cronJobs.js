@@ -89,40 +89,40 @@ cron.schedule("0 0 * * *", async () => {
   }
 });
 
-// Schedule the cron job to run daily at midnight Philippine time (UTC+8)
-cron.schedule("0 16 * * *", async () => { // 4:00 PM UTC is 12:00 AM UTC+8
-  const now = new Date();
-  const philippineTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
-  if (philippineTime.getHours() === 0 && philippineTime.getMinutes() === 0) {
-    console.log("Midnight cron job started at:", philippineTime.toISOString());
-    try {
-      const requirementsCollection = query(collection(db, "Requirements"));
-      const requirementsSnapshot = await getDocs(requirementsCollection);
-      const requirements = requirementsSnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
+// // Schedule the cron job to run daily at midnight Philippine time (UTC+8)
+// cron.schedule("0 16 * * *", async () => { // 4:00 PM UTC is 12:00 AM UTC+8
+//   const now = new Date();
+//   const philippineTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+//   if (philippineTime.getHours() === 0 && philippineTime.getMinutes() === 0) {
+//     console.log("Midnight cron job started at:", philippineTime.toISOString());
+//     try {
+//       const requirementsCollection = query(collection(db, "Requirements"));
+//       const requirementsSnapshot = await getDocs(requirementsCollection);
+//       const requirements = requirementsSnapshot.docs.map((doc) => ({
+//         ...doc.data(),
+//         id: doc.id,
+//       }));
 
-      const today = new Date();
+//       const today = new Date();
 
-      requirements.forEach(async (requirement) => {
-        const expiration = new Date(requirement.expiration);
-        const remainingDays = Math.ceil(
-          (expiration - today) / (1000 * 60 * 60 * 24)
-        );
-        const requirementsRef = doc(db, "Requirements", requirement.id);
+//       requirements.forEach(async (requirement) => {
+//         const expiration = new Date(requirement.expiration);
+//         const remainingDays = Math.ceil(
+//           (expiration - today) / (1000 * 60 * 60 * 24)
+//         );
+//         const requirementsRef = doc(db, "Requirements", requirement.id);
 
-        if (remainingDays === 0) {
-          await updateDoc(requirementsRef, { status: "Expired" });
-          console.log(`Updated status to Expired for requirement ID: ${requirement.id}`);
-        }
-      });
-    } catch (error) {
-      console.log("Error in midnight cron job:", error);
-    }
-    console.log("Midnight cron job finished at:", philippineTime.toISOString());
-  }
-});
+//         if (remainingDays === 0) {
+//           await updateDoc(requirementsRef, { status: "Expired" });
+//           console.log(`Updated status to Expired for requirement ID: ${requirement.id}`);
+//         }
+//       });
+//     } catch (error) {
+//       console.log("Error in midnight cron job:", error);
+//     }
+//     console.log("Midnight cron job finished at:", philippineTime.toISOString());
+//   }
+// });
 
 // Ensure the script keeps running
 setInterval(() => {}, 1000);
