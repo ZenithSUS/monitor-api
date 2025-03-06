@@ -145,12 +145,11 @@ export const updateRequirement = async (req, res) => {
       personInCharge,
       entity,
       status,
-      uploadedFileUrl,
       dateSubmitted,
       expiration,
       renewal,
     } = req.body;
-    const requirement = await updateDoc(
+    await updateDoc(
       doc(db, "Requirements", requirementId),
       {
         department,
@@ -160,7 +159,6 @@ export const updateRequirement = async (req, res) => {
         personInCharge,
         entity,
         status,
-        uploadedFileUrl,
         dateSubmitted,
         expiration,
         renewal,
@@ -170,7 +168,6 @@ export const updateRequirement = async (req, res) => {
     return res.status(200).json({
       status: res.statusCode,
       message: "Requirement updated successfully",
-      data: requirement,
     });
   } catch (error) {
     return res.status(500).json({

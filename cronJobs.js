@@ -85,5 +85,14 @@ cron.schedule("0 0 * * *", async () => { // 12:00 AM UTC is 8:00 AM UTC+8
   }
 });
 
+
+// Schedule the cron job that will run daily at 12:00AM
+cron.schedule("0 0 * * *", async () => {
+  const now = new Date();
+  const philippineTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila"}));
+  
+
+});
+
 // Ensure the script keeps running
 setInterval(() => {}, 1000);
