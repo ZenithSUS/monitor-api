@@ -1,7 +1,8 @@
 import cron from "node-cron";
 import nodemailer from "nodemailer";
 import { db } from "./firebase.js";
-import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
+import { collection, getDocs, updateDoc, query } from "firebase/firestore";
+import status from "statuses";
 
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
@@ -95,7 +96,7 @@ cron.schedule("0 16 * * *", async () => { // 4:00 PM UTC is 12:00 AM UTC+8
   if (philippineTime.getHours() === 0 && philippineTime.getMinutes() === 0) {
     console.log("Midnight cron job started at:", philippineTime.toISOString());
     try {
-      const requirementsCollection = collection(db, "Requirements");
+      const requirementsCollection = query(collection(db, "Requirements"));
       const requirementsSnapshot = await getDocs(requirementsCollection);
       const requirements = requirementsSnapshot.docs.map((doc) => ({
         ...doc.data(),
@@ -109,10 +110,10 @@ cron.schedule("0 16 * * *", async () => { // 4:00 PM UTC is 12:00 AM UTC+8
         const remainingDays = Math.ceil(
           (expiration - today) / (1000 * 60 * 60 * 24)
         );
+        const requirementsRef = doc(db, "Requirements", requirement.id);
 
         if (remainingDays === 0) {
-          const requirementRef = doc(db, "Requirements", requirement.id);
-          await updateDoc(requirementRef, { status: "Expired" });
+          await updateDoc(requirementsRef, { status: "Expired" });
           console.log(`Updated status to Expired for requirement ID: ${requirement.id}`);
         }
       });
