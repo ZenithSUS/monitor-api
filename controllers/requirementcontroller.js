@@ -212,7 +212,8 @@ export const updateRequirementReference = async (req, res) => {
   try {
     const requirementId = req.params.id;
     const { documentReference, uploadedFileUrl } = req.body;
-    const requirement = await updateDoc(
+    
+    await updateDoc(
       doc(db, "Requirements", requirementId),
       {
         documentReference,
@@ -220,13 +221,7 @@ export const updateRequirementReference = async (req, res) => {
       }
     );
 
-    if (!requirement) {
-      return res.status(404).json({
-        status: res.statusCode,
-        message: "Requirement not found",
-      });
-    }
-
+   
     return res.status(200).json({
       status: res.statusCode,
       message: "Requirement updated successfully",
