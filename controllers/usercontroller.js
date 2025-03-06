@@ -59,13 +59,7 @@ export const createUser = async (req, res) => {
   const { firstName, middleName, lastName, department, email, password } =
     req.body;
 
-  if (
-    !firstName ||
-    !lastName ||
-    !department ||
-    !email ||
-    !password
-  ) {
+  if (!firstName || !lastName || !department || !email || !password) {
     return res.status(401).json({
       status: res.statusCode,
       message: "All fields are required",
@@ -85,7 +79,7 @@ export const createUser = async (req, res) => {
       department,
       email,
       role: "user",
-      id: userRecord.uid
+      id: userRecord.uid,
     });
 
     if (users || userRecord) {
