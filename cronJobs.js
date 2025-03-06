@@ -32,14 +32,14 @@ const sendEmail = (email, subject, text, html) => {
   });
 };
 
-// Schedule the cron job to run daily at 3:10 AM UTC (11:10 AM UTC+8)
-cron.schedule("10 3 * * *", async () => {
-  // 3:10 AM UTC is 11:10 AM UTC+8
+// Schedule the cron job to run daily at 12:00 AM UTC (8:00 AM UTC+8)
+cron.schedule("0 0 * * *", async () => {
+  // 12:00 AM UTC is 8:00 AM UTC+8
   const now = new Date();
   const philippineTime = new Date(
     now.toLocaleString("en-US", { timeZone: "Asia/Manila" })
   );
-  if (philippineTime.getHours() === 11 && philippineTime.getMinutes() === 10) {
+  if (philippineTime.getHours() === 8 && philippineTime.getMinutes() === 0) {
     console.log("Cron job started at:", philippineTime.toISOString());
     try {
       const requirementsCollection = collection(db, "Requirements");
