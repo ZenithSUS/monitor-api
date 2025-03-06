@@ -48,8 +48,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logger);
 
-// Route to handle favicon.ico requests
-app.get('/favicon.ico', (req, res) => res.status(204).end());
+// Default route
+app.get('/', (req, res) => {
+  res.send('Welcome to the Monitor API');
+});
 
 // Routes
 app.use("/api/users", users);
