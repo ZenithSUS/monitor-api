@@ -211,11 +211,12 @@ export const updateRequirementRenewal = async (req, res) => {
 export const updateRequirementReference = async (req, res) => {
   try {
     const requirementId = req.params.id;
-    const { documentReference } = req.body;
+    const { documentReference, uploadedFileUrl } = req.body;
     const requirement = await updateDoc(
       doc(db, "Requirements", requirementId),
       {
         documentReference,
+        uploadedFileUrl,
       }
     );
 
