@@ -64,10 +64,11 @@ cron.schedule("0 0 * * *", async () => {
             (frequency === "Annual" || frequency === "Semi Annual")) ||
           (remainingDays <= 30 && frequency === "Quarterly")
         ) {
-          const email = requirement.personInCharge;
-          const subject = "Subscription Expiration Reminder";
-          const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
-          const html = `
+          if (requirement.status !== "Expired") {
+            const email = requirement.personInCharge;
+            const subject = "Subscription Expiration Reminder";
+            const text = `Dear ${requirement.personInCharge},\n\nYour subscription "${requirement.complianceList}" is expiring in ${remainingDays} days.\n\nPlease take the necessary actions.\n\nBest regards,\n${requirement.entity}`;
+            const html = `
             <div style="font-family: Arial, sans-serif; line-height: 1.6;">
               <h2>Subscription Expiration Reminder</h2>
               <p>Dear ${requirement.personInCharge},</p>
@@ -78,8 +79,8 @@ cron.schedule("0 0 * * *", async () => {
               <a href="http://example.com" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Click Me!</a>
             </div>
           `;
-
-          sendEmail(email, subject, text, html);
+            sendEmail(email, subject, text, html);
+          }
         }
       });
     } catch (error) {
@@ -90,9 +91,12 @@ cron.schedule("0 0 * * *", async () => {
 });
 
 // Schedule the cron job to run daily at midnight Philippine time (UTC+8)
-cron.schedule("0 16 * * *", async () => { // 4:00 PM UTC is 12:00 AM UTC+8
+cron.schedule("0 16 * * *", async () => {
+  // 4:00 PM UTC is 12:00 AM UTC+8
   const now = new Date();
-  const philippineTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+  const philippineTime = new Date(
+    now.toLocaleString("en-US", { timeZone: "Asia/Manila" })
+  );
   if (philippineTime.getHours() === 0 && philippineTime.getMinutes() === 0) {
     console.log("Midnight cron job started at:", philippineTime.toISOString());
     try {
@@ -114,7 +118,9 @@ cron.schedule("0 16 * * *", async () => { // 4:00 PM UTC is 12:00 AM UTC+8
 
         if (remainingDays === 0) {
           await updateDoc(requirementsRef, { status: "Expired" });
-          console.log(`Updated status to Expired for requirement ID: ${requirement.id}`);
+          console.log(
+            `Updated status to Expired for requirement ID: ${requirement.id}`
+          );
         }
       });
     } catch (error) {
