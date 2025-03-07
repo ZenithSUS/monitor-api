@@ -2,7 +2,6 @@ import cron from "node-cron";
 import nodemailer from "nodemailer";
 import { db } from "./firebase.js";
 import { collection, getDocs, updateDoc, query } from "firebase/firestore";
-import status from "statuses";
 
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
